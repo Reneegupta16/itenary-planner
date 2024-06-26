@@ -3,6 +3,18 @@
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('itinerary-form');
     const resultsDiv = document.getElementById('itinerary-results');
+    let map;
+
+    // Initialize Google Map
+    function initMap() {
+        map = new google.maps.Map(document.getElementById('google-map'), {
+            center: { lat: 0, lng: 0 },
+            zoom: 2, // Initial zoom level
+        });
+    }
+
+    // Call initMap once the DOM is loaded
+    initMap();
 
     form.addEventListener('submit', function(event) {
         event.preventDefault();
@@ -36,7 +48,28 @@ document.addEventListener('DOMContentLoaded', function() {
             resultsDiv.appendChild(dayDiv);
         }
 
+        // Update map center based on destination (replace with real geocoding)
+        updateMap(destination);
+
         // Scroll to results section after generating itinerary
         resultsDiv.scrollIntoView({ behavior: 'smooth' });
     });
+
+    // Function to update map based on destination (replace with real geocoding)
+    function updateMap(destination) {
+        // Simulate geocoding (replace with real geocoding API call)
+        const geocoder = new google.maps.Geocoder();
+        geocoder.geocode({ address: destination }, function(results, status) {
+            if (status === 'OK') {
+                map.setCenter(results[0].geometry.location);
+                new google.maps.Marker({
+                    map: map,
+                    position: results[0].geometry.location,
+                    title: destination
+                });
+            } else {
+                alert('Geocode was not successful for the following reason: ' + status);
+            }
+        });
+    }
 });
